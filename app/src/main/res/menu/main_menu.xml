@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/main_start_opt"
+        android:title="Start"/>
+
+    <item android:id="@+id/main_stop_opt"
+        android:title="Stop"/>
+
+    <item android:id="@+id/main_pair_opt"
+        android:title="pair"/>
+
+</menu>
