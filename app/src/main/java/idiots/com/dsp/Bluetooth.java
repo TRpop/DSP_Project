@@ -17,15 +17,15 @@ import java.io.OutputStream;
 import java.util.Set;
 import java.util.UUID;
 
-public class Bluetooth {
+public abstract class Bluetooth {
     public final static int REQUEST_BLUETOOTH_ENABLE = 100;
 
     private TextView mConnectionStatus;
 
     private ConnectedTask mConnectedTask = null;
-    static BluetoothAdapter mBluetoothAdapter;
+    private BluetoothAdapter mBluetoothAdapter;
     private String mConnectedDeviceName = null;
-    static boolean isConnectionError = false;
+    private static boolean isConnectionError = false;
     private static final String TAG = "BluetoothClient";
     private Context mContext;
 
@@ -131,6 +131,8 @@ public class Bluetooth {
         }
     }
 
+    protected abstract void onReceive(String s);
+
     public boolean isEnabled(){
         return mBluetoothAdapter.isEnabled();
     }
@@ -138,6 +140,7 @@ public class Bluetooth {
     public boolean isConnected(){
         return mConnectedTask != null;
     }
+    protected abstract void onConnected(String deviceName);
 
     /*
     @Override
@@ -287,7 +290,7 @@ public class Bluetooth {
             if(mConnectionStatus != null){
                 mConnectionStatus.setText("connected to "+mConnectedDeviceName);
             }else {
-                msg("connected to " + mConnectedDeviceName);
+                onConnected(mConnectedDeviceName);
             }
         }
 
@@ -346,6 +349,7 @@ public class Bluetooth {
         @Override
         protected void onProgressUpdate(String... recvMessage) {
             //TODO data received
+            onReceive(recvMessage[0]);
         }
 
         @Override
@@ -397,7 +401,7 @@ public class Bluetooth {
     }
 
     private void msg(String msg){
-        Toast.makeText(mContext, msg, Toast.LENGTH_SHORT);
+        Toast.makeText(mContext, msg, Toast.LENGTH_LONG);
     }
 
     /*
